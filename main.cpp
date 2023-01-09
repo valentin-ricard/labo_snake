@@ -1,16 +1,7 @@
 #include "SDL.h"
-#include <iostream>
-
-template <typename T, typename U> T f(T x, U y, T z) {
-    return x + y + z;
-}
 
 int main(int argc, char *argv[])
 {
-    int i = 1, j = 2, k = 3;
-    double x = 4.5, y = 5.5;
-
-    std::cout << f<double>(i, x, x);
 
     SDL_Init(SDL_INIT_VIDEO);
 
