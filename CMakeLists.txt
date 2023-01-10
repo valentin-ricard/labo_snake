@@ -8,5 +8,5 @@ find_package(SDL2 REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(labo_sdl main.cpp RingBuffer.cpp RingBuffer.h)
+add_executable(labo_sdl src/main.cpp src/RingBuffer.cpp src/RingBuffer.h src/screen.cpp src/screen.h)
 target_link_libraries(labo_sdl ${SDL2_LIBRARIES})
