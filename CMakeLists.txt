@@ -8,5 +8,5 @@ find_package(SDL2 REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(labo_sdl src/main.cpp src/RingBuffer.cpp src/RingBuffer.h src/screen.cpp src/screen.h)
+add_executable(labo_sdl src/main.cpp src/RingBuffer.cpp src/RingBuffer.h src/Screen.cpp src/Screen.h src/Snake.cpp src/Snake.h src/Position.cpp src/Position.h)
 target_link_libraries(labo_sdl ${SDL2_LIBRARIES})
