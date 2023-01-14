@@ -6,21 +6,18 @@
 
 #include "SDL.h"
 #include "Screen.h"
+#include "Arena.h"
 #include <iostream>
+#include <cassert>
 
 int main() {
     {
         Screen screen(50, 75);
 
-        for (int x = 0; x < 50; ++x) {
-            for (int y = 0; y < 75; ++y) {
-                screen.drawPixel(x, y, Color(x, y, 255));
-            }
-        }
+        // Create the arena:
+        Arena arena(50, 75, 10);
 
-        screen.draw();
-
-        SDL_Delay(9000);
+        arena.play(screen);
     }
 
     std::cout << "Finished!";

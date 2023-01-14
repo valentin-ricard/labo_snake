@@ -7,24 +7,37 @@
 
 #include <vector>
 #include "Position.h"
-#include "RingBuffer.h"
+#include "SnakeBuffer.hpp"
+#include "Screen.h"
+#include "utils.h"
+#include "Apple.h"
 
 class Snake {
 
 private:
-    RingBuffer<Position> snakeBuffer;
-    Position applePos;
-    int snake_size;
+    int id;
+    SnakeBuffer<Position> snakeBuffer;
+    Apple apple;
 
 public:
-    Snake(Position& position, size_t size);
+    bool operator==(const Snake& other) const;
+    bool operator!=(const Snake& other) const;
+
+
+    Snake(int id, Position& position, size_t size);
     void resize(size_t size);
-    void move(std::vector<Position> availableMoves);
+    Position move();
+    int size() const;
+    const Position& getHeadPosition() const;
+    const Position& getApplePosition() const;
+    void render(Screen &screen) const;
+    Apple &getApple();
 
-    int getLength() const;
+    int getId() const;
+    size_t getTailIndex(const Position &position);
 
-    Position getPosition();
-    Position getApple();
+private:
+    void setHead(const Position &position);
 };
 
 

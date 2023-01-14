@@ -13,7 +13,6 @@ const int SCREEN_HEIGHT = 800;
 bool isInitialized = false;
 
 Screen::Screen(int width, int height) {
-
     if (isInitialized) {
         isInitialized = true;
         SDL_Init(SDL_INIT_VIDEO);
@@ -44,25 +43,43 @@ Screen::Screen(int width, int height) {
 }
 
 void Screen::clear() {
+    // Set the background to white before clearing
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
     SDL_RenderClear(renderer);
 }
 
-void Screen::draw() {
+void Screen::drawFrame() {
     SDL_RenderPresent(renderer);
+}
+
+bool Screen::shouldQuit() {
+    // Get all the elements from the queue
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                return true;
+        }
+    }
+    return false;
 }
 
 Screen &Screen::drawPixel(int x, int y, const Color &color) {
     SDL_SetRenderDrawColor(renderer, color.red, color.green, color.blue, SDL_ALPHA_OPAQUE);
+
     SDL_RenderDrawPoint(renderer, x, y);
 
     return *this;
 }
 
 Screen::~Screen() {
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
     // As we destroyed the SDL instance, we have to initialize it back again afterwards.
     isInitialized = false;
 }
+
 
 

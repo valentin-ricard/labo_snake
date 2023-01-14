@@ -8,8 +8,15 @@
 
 class Position {
 public:
+    Position operator-(const Position &other) const;
+    Position operator+(const Position &other) const;
+    bool operator==(const Position &other) const;
+    bool operator!=(const Position &other) const;
+
     Position(): x(-1), y(-1) {}
     Position(int x, int y): x(x), y(y) {}
+
+    static Position random(int maxX, int maxY);
 
     int x;
     int y;
