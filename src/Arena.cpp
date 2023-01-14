@@ -86,5 +86,8 @@ void Arena::kill(Snake &killer, Snake &killed) {
     // We show the message first, as the reference may change afterwards
     std::cout << killer.getId() << " a tué " << killed.getId() << std::endl;
 
+    //We also resize the killer of 60% of the killed size
+    killer.resize(killer.size() + (size_t) (0.6 * (killed.size())));
+
     snakes.erase(std::remove(snakes.begin(), snakes.end(), killed), snakes.end());
 }
