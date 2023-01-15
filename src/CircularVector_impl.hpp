@@ -1,24 +1,24 @@
-#include "SnakeBuffer.hpp"
+#include "CircularVector.hpp"
 #include <limits>
 
 template<typename T>
-SnakeBuffer<T>::SnakeBuffer(std::size_t maxSize) {
+CircularVector<T>::CircularVector(std::size_t maxSize) {
     buffer.resize(maxSize);
 }
 
 template<typename T>
-T &SnakeBuffer<T>::at(size_t pos) {
+T &CircularVector<T>::at(size_t pos) {
     return buffer[(head + pos) % buffer.size()];
 }
 
 template<typename T>
-const T &SnakeBuffer<T>::at(size_t pos) const {
+const T &CircularVector<T>::at(size_t pos) const {
     if (buffer.size())
         return buffer[(head + pos) % buffer.size()];
 }
 
 template<typename T>
-T SnakeBuffer<T>::push_front(const T &object) {
+T CircularVector<T>::push_front(const T &object) {
     head = (head + 1) % buffer.size();
     T result = buffer.at(head);
     buffer.at(head) = object;
@@ -27,25 +27,28 @@ T SnakeBuffer<T>::push_front(const T &object) {
 }
 
 template<typename T>
-size_t SnakeBuffer<T>::size() const {
+size_t CircularVector<T>::size() const {
     return buffer.size();
 }
 
 template<typename T>
-void SnakeBuffer<T>::resize(size_t newSize) {
+void CircularVector<T>::resize(size_t newSize) {
+    if (newSize == 0) {
+        volatile int i = 0;
+    }
+
     if (newSize == size()) {
         // NO-OP, short circuiting operation
-    } else if (newSize > size()) {
+        return;
+    }
+
+    if (newSize > size()) {
         int originalSize = size();
         buffer.insert(buffer.cbegin() + (absolute()), newSize - size(), T());
         // If we are in the last position (usual when length = 1), then the elements are created at the beginning,
         // add to the head the added count.
         if (head == originalSize - 1) {
             head += newSize - originalSize;
-        }
-
-        if (at(0) == T()) {
-            volatile int test = 0;
         }
     } else {
         int deleteCount = size() - newSize;
@@ -58,24 +61,27 @@ void SnakeBuffer<T>::resize(size_t newSize) {
             head -= decal;
         }
 
+        if (buffer.size() == 0) {
+            volatile int i = 0;
+        }
     }
 }
 
 template<typename T>
-size_t SnakeBuffer<T>::absolute() { return (this->head + 1) % this->buffer.size(); }
+size_t CircularVector<T>::absolute() { return (this->head + 1) % this->buffer.size(); }
 
 template<typename T>
-T &SnakeBuffer<T>::at_head() {
+T &CircularVector<T>::at_head() {
     return at(0);
 }
 
 template<typename T>
-const T &SnakeBuffer<T>::at_head() const {
+const T &CircularVector<T>::at_head() const {
     return at(0);
 }
 
 template<typename T>
-size_t SnakeBuffer<T>::find(const T &other) const {
+size_t CircularVector<T>::find(const T &other) const {
     // std::find was not usable because of the std::distance not being seen
     for (size_t i = 0; i < size(); ++i) {
         // We use a reverse index, so we are counting from the head instead
@@ -86,4 +92,14 @@ size_t SnakeBuffer<T>::find(const T &other) const {
     }
 
     return std::numeric_limits<size_t>::max();
+}
+
+template<typename T>
+CircularVector<T>& CircularVector<T>::operator=(const CircularVector<T>& other) {
+    this->buffer = other.buffer;
+    this->head = other.head;
+
+    if (size() == 0) {
+        volatile int breakpoint = 0;
+    }
 }

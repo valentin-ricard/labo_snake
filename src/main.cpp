@@ -6,10 +6,10 @@
 
 int main() {
     {
-        Screen screen(1200, 800);
+        Screen screen(200, 200);
 
         // Create the arena:
-        Arena arena(1200, 800, 1000);
+        Arena arena(200, 200, 25);
 
         arena.play(screen);
     }

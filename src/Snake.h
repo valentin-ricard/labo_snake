@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "Position.h"
-#include "SnakeBuffer.hpp"
+#include "CircularVector.hpp"
 #include "Screen.h"
 #include "utils.h"
 #include "Apple.h"
@@ -16,7 +16,7 @@ class Snake {
 
 private:
     int id;
-    SnakeBuffer<Position> snakeBuffer;
+    CircularVector<Position> snakeBuffer;
     Apple apple;
 
 public:

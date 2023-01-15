@@ -38,22 +38,28 @@ void Arena::play(Screen &screen) {
     // play until there's a winner or the close button has been pressed
 
     while (snakes.size() > 1 && !screen.shouldQuit()) {
-        for (size_t turn = 0; turn < snakes.size(); ++turn) {
-            Snake &snake = snakes[turn];
-            Position position = snake.move();
-            // Check if you are on the tail of another snake:
-            collisionCheck(snake, turn);
-            // With the position, eat the apple if reached
-            if (position == snake.getApplePosition()) {
-                snake.resize(snake.size() + snake.getApple().getValue());
-                // Generate a new apple
-                snake.getApple().reset(width, height);
-            }
-        }
+        // Tick the arena
+        tick();
         // The turn's finished, draw the state:
         render(screen);
         // Delay a bit:
-        SDL_Delay(20);
+        SDL_Delay(0);
+    }
+}
+
+
+void Arena::tick() {
+    for (size_t turn = 0; turn < snakes.size(); ++turn) {
+        Snake &snake = snakes[turn];
+        Position position = snake.move();
+        // Check if you are on the tail of another snake:
+        collisionCheck(snake, turn);
+        // With the position, eat the apple if reached
+        if (position == snake.getApplePosition()) {
+            snake.resize(snake.size() + snake.getApple().getValue());
+            // Generate a new apple
+            snake.getApple().reset(width, height);
+        }
     }
 }
 
@@ -62,7 +68,7 @@ void Arena::collisionCheck(Snake &snake, size_t &turn) {
         Snake &other = snakes[otherIdx];
         if (other != snake) {
             size_t tailIndex = other.getTailIndex(snake.getHeadPosition());
-            if (tailIndex == NO_MATCH) {
+            if (tailIndex == CircularVector<Position>::NO_MATCH) {
                 // NO-OP, no collision
             } else if (tailIndex == 0) {
                 // Head fight!
@@ -88,7 +94,7 @@ void Arena::collisionCheck(Snake &snake, size_t &turn) {
 
 void Arena::kill(Snake &killer, Snake &killed) {
     // We show the message first, as the reference may change afterwards
-    std::cout << killer.getId() << " a tué " << killed.getId() << std::endl;
+    std::cout << killer.getId() << " a tue " << killed.getId() << std::endl;
 
     //We also resize the killer of 60% of the killed size
     killer.resize(killer.size() + (size_t) (KILL_RETENTION_RATE * (float) killed.size()));
