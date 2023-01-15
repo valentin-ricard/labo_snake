@@ -1,12 +1,20 @@
+//---------------------------------------------------------
+// Fichier        : Apple.h
+// Auteur(s)      : Valentin Ricard & Arthur Menétrey
+// Classe         : PRG1-E
+// Date           : 2023.01.15
+// But            : Classe defining the apples that will be eaten by the snakes
+//                  Contains the random positioning and render methods
 //
-// Created by ValentinRicard on 13.01.2023.
-//
+// Modifications  : -
+// Remarque(s)    : -
+//---------------------------------------------------------
 
 #ifndef LABO_SDL_APPLE_H
 #define LABO_SDL_APPLE_H
 
-#include "Position.h"
-#include "Screen.h"
+#include "Position.h"   //Position class
+#include "Screen.h"     //Drawing on screen
 /**
  * The lowest value an apple can have
  */

@@ -1,22 +1,20 @@
 //---------------------------------------------------------
-// Fichier        : utils.h
-// Auteur(s)      : Rodrigo Lopes & Valentin Ricard
-// Classe         : PRG1-E
-// Date           : 2022-12-20
-// But            : Réaliser la déclaration des prototypes de fonctions
-//                  nécessaires au bon fonctionnement du labo en questions.
-//                  .
-// Modifications  : -
-// Remarque(s)    : Ce fichier contient des fonctions reutilisable afin
-//                  d'être utilisé comme boîte à outils pour des utilisations
-//                  dans un autre contexte
+// File           : utils.h
+// Author(s)      : Valentin Ricard & Arthur Menétrey
+// Course         : PRG1-E
+// Date           : 2023-01-12
+// Objective      : Implementation of a toolbox reused across projects.
+// Modifications  :
+//   2023-01-12 / vri - Translation of the header and implementation in english
+// Remarks        : This file contains reusable methods that can be used across
+//                  multiple projects
 //---------------------------------------------------------
+
 
 #ifndef LABO_ROBOT_UTILS_H
 #define LABO_ROBOT_UTILS_H
 
-// Note: Includes nécessaires à la déclaration
-// des prototypes de fonctions
+// Note: Necessary includes for the definitions in this file
 #include <iostream> //cout
 #include <string>   //class string
 #include <vector>   //class vector

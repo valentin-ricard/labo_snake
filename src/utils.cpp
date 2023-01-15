@@ -6,7 +6,8 @@
 // Objective      : Implementation of a toolbox reused across projects.
 // Modifications  :
 //   2023-01-12 / vri - Translation of the header and implementation in english
-// Remarks        :
+// Remarks        : This file contains reusable methods that can be used across
+//                  multiple projects
 //---------------------------------------------------------
 
 #include <string>       //Type : string
@@ -14,7 +15,7 @@
 #include <limits>       // numeric_limits<streamsize>
 #include <random>       //default_random_engine
 #include <chrono>       //chrono::system_clock::now().time_since_epoch().count()
-#include "utils.h"
+#include "utils.h"      //Random number generator
 
 using namespace std; // Implicit call to the std namespace
 

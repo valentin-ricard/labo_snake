@@ -1,11 +1,18 @@
+//---------------------------------------------------------
+// Fichier        : Arena.cpp
+// Auteur(s)      : Valentin Ricard & Arthur Menétrey
+// Classe         : PRG1-E
+// Date           : 2023.01.15
+// But            : Class defining the arena in which will be fighting the snakes
+//                  Contains the core logic of the game and the game loop
 //
-// Created by ValentinRicard on 12.01.2023.
-//
+// Modifications  : -
+// Remarque(s)    : -
+//---------------------------------------------------------
 
-#include "Arena.h"
-#include "utils.h"
-#include <iostream>
-#include <chrono>
+#include "Arena.h"  //Corresponding definition
+#include "utils.h"  //Random integer generation
+#include <iostream> //Output kills on screen
 
 Snake Arena::generateSnake(int id) const {
     // Get random position for it
@@ -43,7 +50,7 @@ void Arena::play(Screen &screen) {
         // The turn's finished, draw the state:
         render(screen);
         // Delay a bit:
-        SDL_Delay(0);
+        SDL_Delay(20);
     }
 }
 
@@ -66,28 +73,49 @@ void Arena::tick() {
 void Arena::collisionCheck(Snake &snake, size_t &turn) {
     for (size_t otherIdx = 0; otherIdx < snakes.size(); ++otherIdx) {
         Snake &other = snakes[otherIdx];
-        if (other != snake) {
-            size_t tailIndex = other.getTailIndex(snake.getHeadPosition());
-            if (tailIndex == CircularVector<Position>::NO_MATCH) {
-                // NO-OP, no collision
-            } else if (tailIndex == 0) {
-                // Head fight!
-                if (other.size() > snake.size()) {
+
+        if (other == snake) {
+            continue;
+        }
+
+        size_t tailIndex = other.getTailIndex(snake.getHeadPosition());
+
+        if (tailIndex == CircularVector<Position>::NO_MATCH) {
+            continue;
+        }
+
+        if (tailIndex == 0) {
+            // Head fight!
+            if (other.size() > snake.size()) {
+                kill(other, snake);
+                // Decrement to still process the previous snake
+                --turn;
+            } else if (other.size() < snake.size()) {
+                kill(snake, other);
+
+                if (otherIdx < turn) {
+                    --turn;
+                }
+            } else {
+                //Same size, winner is randomly chosen
+                int winner = randomNumber(2);
+
+                if (winner % 2) {
                     kill(other, snake);
                     // Decrement to still process the previous snake
                     --turn;
                 } else {
                     kill(snake, other);
-                    // TODO: Si other > snake, sinon --snake...
+
                     if (otherIdx < turn) {
                         --turn;
                     }
                 }
-            } else {
-                // Tail eaters!
-                snake.resize(snake.size() + (int) (TAIL_RETENTION_RATE * (float) (other.size() - tailIndex)));
-                other.resize(tailIndex);
             }
+        } else {
+            // Tail eaters!
+            snake.resize(snake.size() + (int) (TAIL_RETENTION_RATE * (float) (other.size() - tailIndex)));
+            other.resize(tailIndex);
         }
     }
 }

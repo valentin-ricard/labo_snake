@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, margin=2cm]{geometry}
+\usepackage{minted}
+\usepackage{authblk}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{forarray}
+
+\newcommand{\program}[2]{\gdef\prgname{#1}\gdef\prgpath{#2}}
+\newcommand{\includedFiles}{
+    \program{main.cpp}{src/main.cpp};
+    \program{utils.h}{src/utils.h};
+    \program{utils.cpp}{src/utils.cpp};
+    \program{Screen.h}{src/Screen.h};
+    \program{Screen.cpp}{src/Screen.cpp};
+    \program{Position.h}{src/Position.h};
+    \program{Position.cpp}{src/Position.cpp};
+    \program{CircularVector.hpp}{src/CircularVector.hpp};
+    \program{CircularVector\_impl.cpp}{src/CircularVector_impl.hpp};
+    \program{Apple.h}{src/Apple.h};
+    \program{Apple.cpp}{src/Apple.cpp};
+    \program{Snake.h}{src/Snake.h};
+    \program{Snake.cpp}{src/Snake.cpp};
+    \program{Arena.h}{src/Arena.h};
+    \program{Arena.cpp}{src/Arena.cpp};
+}
+
+\renewcommand*{\Authsep}{, }
+\newcommand{\forProg}[1]{
+    \ForEachX{;}{\thislevelitem \gdef\itemcount{\thislevelcount} #1}{\includedFiles}
+}
+
+\title{Laboratoire - Snakes}
+\author{Valentin Ricard \and Arthur Menétrey}
+\date{\today}
+
+\begin{document}
+    \maketitle
+
+    \section{Informations}\label{sec:informations}
+
+    \section{Code}\label{sec:code}
+
+    \forProg{
+        \subsection{\text{\prgname}}
+        \inputminted[linenos, breaklines]{cpp}{\prgpath}
+        \newpage
+    }
+\end{document}

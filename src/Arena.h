@@ -1,13 +1,20 @@
+//---------------------------------------------------------
+// Fichier        : Arena.h
+// Auteur(s)      : Valentin Ricard & Arthur Menétrey
+// Classe         : PRG1-E
+// Date           : 2023.01.15
+// But            : Class defining the arena in which will be fighting the snakes
+//                  Contains the core logic of the game and the game loop
 //
-// Created by ValentinRicard on 12.01.2023.
-//
+// Modifications  : -
+// Remarque(s)    : -
+//---------------------------------------------------------
 
 #ifndef LABO_SDL_ARENA_H
 #define LABO_SDL_ARENA_H
 
-
-#include <vector>
-#include "Snake.h"
+#include "Snake.h"  //Snake definition
+#include <vector>   //Vector definition
 
 const static std::size_t STARTING_SNAKE_SIZE = 10;
 const static float TAIL_RETENTION_RATE = 0.4f;

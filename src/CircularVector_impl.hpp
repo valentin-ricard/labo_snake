@@ -1,9 +1,22 @@
-#include "CircularVector.hpp"
-#include <limits>
+//---------------------------------------------------------
+// Fichier        : CircularVector_impl.hpp
+// Auteur(s)      : Valentin Ricard & Arthur Menétrey
+// Classe         : PRG1-E
+// Date           : 2023.01.15
+// But            : Classe used for data storage in a circular buffer
+//                  This data structure can be used for exemple for storing snakes positions
+//                  in a more optimized and fluent way
+//
+// Modifications  : -
+// Remarque(s)    : -
+//---------------------------------------------------------
+
+#include "CircularVector.hpp"   //Corresponding definition
+#include <limits>               //Size_t numeric limit
 
 template<typename T>
-CircularVector<T>::CircularVector(std::size_t maxSize) {
-    buffer.resize(maxSize);
+CircularVector<T>::CircularVector(std::size_t size) {
+    buffer.resize(size);
 }
 
 template<typename T>
@@ -13,13 +26,12 @@ T &CircularVector<T>::at(size_t pos) {
 
 template<typename T>
 const T &CircularVector<T>::at(size_t pos) const {
-    if (buffer.size())
-        return buffer[(head + pos) % buffer.size()];
+    return buffer[(head + pos) % buffer.size()];
 }
 
 template<typename T>
 T CircularVector<T>::push_front(const T &object) {
-    head = (head + 1) % buffer.size();
+    head = incrementHead();
     T result = buffer.at(head);
     buffer.at(head) = object;
 
@@ -33,10 +45,6 @@ size_t CircularVector<T>::size() const {
 
 template<typename T>
 void CircularVector<T>::resize(size_t newSize) {
-    if (newSize == 0) {
-        volatile int i = 0;
-    }
-
     if (newSize == size()) {
         // NO-OP, short circuiting operation
         return;
@@ -44,7 +52,7 @@ void CircularVector<T>::resize(size_t newSize) {
 
     if (newSize > size()) {
         int originalSize = size();
-        buffer.insert(buffer.cbegin() + (absolute()), newSize - size(), T());
+        buffer.insert(buffer.cbegin() + (incrementHead()), newSize - size(), T());
         // If we are in the last position (usual when length = 1), then the elements are created at the beginning,
         // add to the head the added count.
         if (head == originalSize - 1) {
@@ -60,15 +68,13 @@ void CircularVector<T>::resize(size_t newSize) {
             buffer.erase(buffer.cbegin(), buffer.cbegin() + decal);
             head -= decal;
         }
-
-        if (buffer.size() == 0) {
-            volatile int i = 0;
-        }
     }
 }
 
 template<typename T>
-size_t CircularVector<T>::absolute() { return (this->head + 1) % this->buffer.size(); }
+size_t CircularVector<T>::incrementHead() {
+    return (this->head + 1) % this->buffer.size();
+}
 
 template<typename T>
 T &CircularVector<T>::at_head() {
@@ -95,11 +101,9 @@ size_t CircularVector<T>::find(const T &other) const {
 }
 
 template<typename T>
-CircularVector<T>& CircularVector<T>::operator=(const CircularVector<T>& other) {
+CircularVector<T> &CircularVector<T>::operator=(const CircularVector<T> &other) {
     this->buffer = other.buffer;
     this->head = other.head;
 
-    if (size() == 0) {
-        volatile int breakpoint = 0;
-    }
+    return *this;
 }

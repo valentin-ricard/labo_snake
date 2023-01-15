@@ -1,10 +1,18 @@
+//---------------------------------------------------------
+// Fichier        : Snake.cpp
+// Auteur(s)      : Valentin Ricard & Arthur Menétrey
+// Classe         : PRG1-E
+// Date           : 2023.01.15
+// But            : Snake class that is used for basic snake movement, positioning
+//                  and containing its own apple
 //
-// Created by ValentinRicard on 10.01.2023.
-//
+// Modifications  : -
+// Remarque(s)    : -
+//---------------------------------------------------------
 
-#include "Snake.h"
-#include "Screen.h"
-#include "utils.h"
+#include "Snake.h"  //Corresponding definition
+#include "Screen.h" //Draw on screen
+#include "utils.h"  //Random integer generator
 
 Snake::Snake(int id, Position& position, size_t size) : id(id), snakeBuffer(size) {
     // Set the first position:
