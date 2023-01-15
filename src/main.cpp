@@ -1,9 +1,3 @@
-#define named(blockname) goto blockname; \
-                         blockname##_skip: if (0) \
-                         blockname:
-
-#define break(blockname) goto blockname##_skip
-
 #include "SDL.h"
 #include "Screen.h"
 #include "Arena.h"
@@ -12,10 +6,10 @@
 
 int main() {
     {
-        Screen screen(50, 75);
+        Screen screen(1200, 800);
 
         // Create the arena:
-        Arena arena(50, 75, 10);
+        Arena arena(1200, 800, 1000);
 
         arena.play(screen);
     }

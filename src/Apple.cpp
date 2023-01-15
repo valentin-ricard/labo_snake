@@ -14,8 +14,8 @@ int Apple::getValue() const {
 }
 
 void Apple::reset(int arenaWidth, int arenaHeight) {
-    // Set new positions:
     position = Position::random(arenaWidth, arenaHeight);
+
     value = APPLE_VALUE_MIN + randomNumber(APPLE_VALUE_MAX - APPLE_VALUE_MIN);
 }
 

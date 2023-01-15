@@ -5,6 +5,7 @@
 #include "Arena.h"
 #include "utils.h"
 #include <iostream>
+#include <chrono>
 
 Snake Arena::generateSnake(int id) const {
     // Get random position for it
@@ -41,32 +42,7 @@ void Arena::play(Screen &screen) {
             Snake &snake = snakes[turn];
             Position position = snake.move();
             // Check if you are on the tail of another snake:
-            for (size_t otherIdx = 0; otherIdx < snakes.size(); ++otherIdx) {
-                Snake &other = snakes[otherIdx];
-                if (other != snake) {
-                    size_t tailIndex = other.getTailIndex(position);
-                    if (tailIndex == NO_MATCH) {
-                        // NO-OP, no collision
-                    } else if (tailIndex == 0) {
-                        // Head fight!
-                        if (other.size() > snake.size()) {
-                            kill(other, snake);
-                            // Decrement to still process the previous snake
-                            --turn;
-                        } else {
-                            kill(snake, other);
-                            // TODO: Si other > snake, sinon --snake...
-                            if (otherIdx < turn) {
-                                --turn;
-                            }
-                        }
-                    } else {
-                        // Tail eaters!
-                        snake.resize(snake.size() + (int) (((double) other.size() - tailIndex) * 0.4));
-                        other.resize(tailIndex);
-                    }
-                }
-            }
+            collisionCheck(snake, turn);
             // With the position, eat the apple if reached
             if (position == snake.getApplePosition()) {
                 snake.resize(snake.size() + snake.getApple().getValue());
@@ -78,7 +54,35 @@ void Arena::play(Screen &screen) {
         render(screen);
         // Delay a bit:
         SDL_Delay(20);
-        // Check
+    }
+}
+
+void Arena::collisionCheck(Snake &snake, size_t &turn) {
+    for (size_t otherIdx = 0; otherIdx < snakes.size(); ++otherIdx) {
+        Snake &other = snakes[otherIdx];
+        if (other != snake) {
+            size_t tailIndex = other.getTailIndex(snake.getHeadPosition());
+            if (tailIndex == NO_MATCH) {
+                // NO-OP, no collision
+            } else if (tailIndex == 0) {
+                // Head fight!
+                if (other.size() > snake.size()) {
+                    kill(other, snake);
+                    // Decrement to still process the previous snake
+                    --turn;
+                } else {
+                    kill(snake, other);
+                    // TODO: Si other > snake, sinon --snake...
+                    if (otherIdx < turn) {
+                        --turn;
+                    }
+                }
+            } else {
+                // Tail eaters!
+                snake.resize(snake.size() + (int) (TAIL_RETENTION_RATE * (float) (other.size() - tailIndex)));
+                other.resize(tailIndex);
+            }
+        }
     }
 }
 
@@ -87,7 +91,7 @@ void Arena::kill(Snake &killer, Snake &killed) {
     std::cout << killer.getId() << " a tué " << killed.getId() << std::endl;
 
     //We also resize the killer of 60% of the killed size
-    killer.resize(killer.size() + (size_t) (0.6 * (killed.size())));
+    killer.resize(killer.size() + (size_t) (KILL_RETENTION_RATE * (float) killed.size()));
 
     snakes.erase(std::remove(snakes.begin(), snakes.end(), killed), snakes.end());
 }
