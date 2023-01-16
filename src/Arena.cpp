@@ -90,11 +90,13 @@ void Arena::collisionCheck(Snake &snake, size_t &turn) {
                 kill(other, snake);
                 // Decrement to still process the previous snake
                 --turn;
+                return;
             } else if (other.size() < snake.size()) {
                 kill(snake, other);
 
                 if (otherIdx < turn) {
                     --turn;
+                    return;
                 }
             } else {
                 //Same size, winner is randomly chosen
@@ -104,11 +106,13 @@ void Arena::collisionCheck(Snake &snake, size_t &turn) {
                     kill(other, snake);
                     // Decrement to still process the previous snake
                     --turn;
+                    return;
                 } else {
                     kill(snake, other);
 
                     if (otherIdx < turn) {
                         --turn;
+                        return;
                     }
                 }
             }

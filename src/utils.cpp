@@ -15,6 +15,7 @@
 #include <limits>       // numeric_limits<streamsize>
 #include <random>       //default_random_engine
 #include <chrono>       //chrono::system_clock::now().time_since_epoch().count()
+#include <numeric>      //Iota function
 #include "utils.h"      //Random number generator
 
 using namespace std; // Implicit call to the std namespace
@@ -37,7 +38,7 @@ vector<size_t> randomOrder(size_t length) {
 
 int input(const string &invitMessage, const string &errorMessage, int lowerLimit, int upperLimit) {
     int input;
-    bool error;
+    bool isError;
 
     do{
         // Invit message
@@ -53,13 +54,13 @@ int input(const string &invitMessage, const string &errorMessage, int lowerLimit
         cin >> input;
 
         // Input validation
-        error = cin.fail()
-                 or input < lowerLimit
-                 or error > upperLimit;
+        isError = cin.fail()
+                  or input < lowerLimit
+                  or input > upperLimit;
 
         // Error ?
-        if (error) {
-            // Show error message
+        if (isError) {
+            // Show isError message
             cout << errorMessage << endl;
             // Fix cin buffer
             cin.clear();
@@ -67,7 +68,7 @@ int input(const string &invitMessage, const string &errorMessage, int lowerLimit
 
         //Clear input buffer
         CLEAR_BUFFER_CIN;
-    }while(error);
+    }while(isError);
 
     //Return user input
     return input;
