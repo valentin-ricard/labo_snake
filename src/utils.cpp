@@ -10,13 +10,13 @@
 //                  multiple projects
 //---------------------------------------------------------
 
-#include <string>       //Type : string
+#include <string>       // std::string
 #include <iostream>     // cin et cout
 #include <limits>       // numeric_limits<streamsize>
-#include <random>       //default_random_engine
-#include <chrono>       //chrono::system_clock::now().time_since_epoch().count()
-#include <numeric>      //Iota function
-#include "utils.h"      //Random number generator
+#include <random>       // default_random_engine
+#include <chrono>       // chrono::system_clock::now().time_since_epoch().count()
+#include <numeric>      // std::iota
+#include "utils.h"      // Random number generator
 
 using namespace std; // Implicit call to the std namespace
 

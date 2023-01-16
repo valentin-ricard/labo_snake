@@ -83,11 +83,9 @@ private:
      * In that case, either eat the tail, or do a deathmatch
      * @see Arena::kill(Snake&, Snake&)
      *
-     * @param newSnakeHead
-     * @param turn
-     * @param snake
+     * @param snake The playing snake
      */
-    void collisionCheck(Snake &snake, size_t &turn);
+    void collisionCheck(std::vector<Snake>::iterator &snake);
 
     /**
      * Generate a new snake with the provided ID and a random position

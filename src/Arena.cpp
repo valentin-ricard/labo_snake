@@ -56,29 +56,27 @@ void Arena::play(Screen &screen) {
 
 
 void Arena::tick() {
-    for (size_t turn = 0; turn < snakes.size(); ++turn) {
-        Snake &snake = snakes[turn];
-        Position position = snake.move();
+    for (auto snake = snakes.begin(); snake != snakes.end(); ++snake) {
+        Position position = snake->move();
         // Check if you are on the tail of another snake:
-        collisionCheck(snake, turn);
+        collisionCheck(snake);
         // With the position, eat the apple if reached
-        if (position == snake.getApplePosition()) {
-            snake.resize(snake.size() + snake.getApple().getValue());
+        if (position == snake->getApplePosition()) {
+            snake->resize(snake->size() + snake->getApple().getValue());
             // Generate a new apple
-            snake.getApple().reset(width, height);
+            snake->getApple().reset(width, height);
         }
     }
 }
 
-void Arena::collisionCheck(Snake &snake, size_t &turn) {
-    for (size_t otherIdx = 0; otherIdx < snakes.size(); ++otherIdx) {
-        Snake &other = snakes[otherIdx];
+void Arena::collisionCheck(std::vector<Snake>::iterator &snake) {
+    for (auto other = snakes.begin(); other != snakes.end(); ++other) {
 
         if (other == snake) {
             continue;
         }
 
-        size_t tailIndex = other.getTailIndex(snake.getHeadPosition());
+        size_t tailIndex = other->getTailIndex(snake->getHeadPosition());
 
         if (tailIndex == CircularVector<Position>::NO_MATCH) {
             continue;
@@ -86,40 +84,29 @@ void Arena::collisionCheck(Snake &snake, size_t &turn) {
 
         if (tailIndex == 0) {
             // Head fight!
-            if (other.size() > snake.size()) {
-                kill(other, snake);
+            // If the sizes are equals, do a fair dice roll, otherwise, the longest wins.
+            bool isKiller = snake->size() != other->size() ?
+                            snake->size() > other->size() :
+                            randomNumber(2);
+
+            if (isKiller) {
+                kill(*other, *snake);
                 // Decrement to still process the previous snake
-                --turn;
+                --snake;
                 return;
-            } else if (other.size() < snake.size()) {
-                kill(snake, other);
-
-                if (otherIdx < turn) {
-                    --turn;
-                    return;
-                }
             } else {
-                //Same size, winner is randomly chosen
-                int winner = randomNumber(2);
+                kill(*snake, *other);
 
-                if (winner % 2) {
-                    kill(other, snake);
-                    // Decrement to still process the previous snake
-                    --turn;
-                    return;
+                if (std::distance(snakes.begin(), other) < std::distance(snakes.begin(), snake)) {
+                    --snake;
                 } else {
-                    kill(snake, other);
-
-                    if (otherIdx < turn) {
-                        --turn;
-                        return;
-                    }
+                    --other;
                 }
             }
         } else {
             // Tail eaters!
-            snake.resize(snake.size() + (int) (TAIL_RETENTION_RATE * (float) (other.size() - tailIndex)));
-            other.resize(tailIndex);
+            snake->resize(snake->size() + (int) (TAIL_RETENTION_RATE * (float) (other->size() - tailIndex)));
+            other->resize(tailIndex);
         }
     }
 }
