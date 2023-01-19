@@ -58,14 +58,15 @@ void Arena::play(Screen &screen) {
 void Arena::tick() {
     for (auto snake = snakes.begin(); snake != snakes.end(); ++snake) {
         Position position = snake->move();
-        // Check if you are on the tail of another snake:
-        collisionCheck(snake);
         // With the position, eat the apple if reached
         if (position == snake->getApplePosition()) {
             snake->resize(snake->size() + (size_t) snake->getApple().getValue());
             // Generate a new apple
             snake->getApple().reset(width, height);
         }
+
+        // Check if you are on the tail of another snake:
+        collisionCheck(snake);
     }
 }
 
