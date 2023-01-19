@@ -19,21 +19,21 @@
  */
 class Color {
 public:
-    Color(short red, short green, short blue) : red(red), green(green), blue(blue) {}
+    Color(unsigned char red, unsigned char green, unsigned char blue) : red(red), green(green), blue(blue) {}
 
     /**
      * The red component of the color
      */
-    short red;
+    unsigned char red;
     /**
      * The green component of the color
      */
-    short green;
+    unsigned char green;
 
     /**
      * The blue component of the color
      */
-    short blue;
+    unsigned char blue;
 };
 
 // == Common colors ==

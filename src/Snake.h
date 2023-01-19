@@ -62,7 +62,7 @@ public:
      * The size of the snake
      * @return The new size
      */
-    int size() const;
+    size_t size() const;
 
     /**
      * Gets the position of the head

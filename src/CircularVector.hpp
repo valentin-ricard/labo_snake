@@ -27,7 +27,7 @@ class CircularVector {
 
 private:
     std::vector<T> buffer = std::vector<T>();
-    size_t head = -1;
+    size_t head = 0;
 
 public:
     /**
@@ -40,7 +40,9 @@ public:
      *
      * @param size the initial size
      */
-    CircularVector(std::size_t size);
+    explicit CircularVector(std::size_t size);
+
+    CircularVector(const CircularVector<T> &other): buffer(other.buffer), head(other.head) {}
 
     /**
      * Gets the element at the specified position (relative to the head)

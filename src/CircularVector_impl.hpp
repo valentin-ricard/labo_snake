@@ -51,28 +51,34 @@ void CircularVector<T>::resize(size_t newSize) {
     }
 
     if (newSize > size()) {
-        int originalSize = size();
-        buffer.insert(buffer.cbegin() + (incrementHead()), newSize - size(), T());
+        size_t originalSize = size();
+        buffer.insert(buffer.cbegin() + ((long int) incrementHead()), newSize - size(), T());
         // If we are in the last position (usual when length = 1), then the elements are created at the beginning,
         // add to the head the added count.
         if (head == originalSize - 1) {
             head += newSize - originalSize;
         }
     } else {
-        int deleteCount = size() - newSize;
-        int decal = head + 1 + deleteCount - size();
+        // Long long is needed to make sure it still fits
+        long int deleteCount = (long int) (size() - newSize);
+        long int decal = (long int) head + 1 + deleteCount - (int) size();
 
-        buffer.erase(buffer.cbegin() + head + 1, buffer.cbegin() + head + 1 + (deleteCount - std::max(decal, 0)));
+        buffer.erase(buffer.cbegin() + ((long int) head + 1),
+                     buffer.cbegin() + ((long int) head + 1 + (deleteCount - std::max<long int>(decal, 0))));
 
         if (decal > 0) {
             buffer.erase(buffer.cbegin(), buffer.cbegin() + decal);
-            head -= decal;
+            // We are sure that decal > 0, so we can cast
+            head -= (unsigned int) decal;
         }
     }
 }
 
 template<typename T>
 size_t CircularVector<T>::incrementHead() {
+    if (size() == 0) {
+        return 0;
+    }
     return (this->head + 1) % this->buffer.size();
 }
 

@@ -26,6 +26,11 @@ const static int MAX_SNAKES = 1000;
 // The rest of the screen constraints are defined in Screen.cpp
 
 int main(int argc, char *argv[]) {
+    //region Fix for windows
+    (void)argc;
+    (void)argv;
+    //endregion Fix for windows
+
     int screenWidth = input("Largeur", "La largeur est invalide.", MIN_SCREEN_SIZE, MAX_SCREEN_WIDTH);
     int screenHeight = input("Hauteur", "La hauteur est invalide.", MIN_SCREEN_SIZE, MAX_SCREEN_HEIGHT);
     int nbSnakes = input("Nbre snakes", "Le nombre de serpents est invalide", MIN_SNAKES, MAX_SNAKES);

@@ -62,10 +62,10 @@ void Snake::render(Screen &screen) const {
     apple.render(screen);
 
     // Draw every case of the snake, if it is not buffered (-1, -1)
-    for (int i = 0; i < snakeBuffer.size(); ++i) {
+    for (size_t i = 0; i < snakeBuffer.size(); ++i) {
         const Position &pos = snakeBuffer.at(i);
         if (pos != Position(-1, -1)) {
-            screen.drawPixel(pos.x, pos.y, Color(id * 128, id * 128, 255));
+            screen.drawPixel(pos.x, pos.y, GREEN);
         }
     }
 }
@@ -75,7 +75,7 @@ void Snake::setHead(const Position &position) {
     snakeBuffer.push_front(position);
 }
 
-int Snake::size() const {
+size_t Snake::size() const {
     return snakeBuffer.size();
 }
 

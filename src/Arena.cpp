@@ -62,7 +62,7 @@ void Arena::tick() {
         collisionCheck(snake);
         // With the position, eat the apple if reached
         if (position == snake->getApplePosition()) {
-            snake->resize(snake->size() + snake->getApple().getValue());
+            snake->resize(snake->size() + (size_t) snake->getApple().getValue());
             // Generate a new apple
             snake->getApple().reset(width, height);
         }
@@ -105,7 +105,7 @@ void Arena::collisionCheck(std::vector<Snake>::iterator &snake) {
             }
         } else {
             // Tail eaters!
-            snake->resize(snake->size() + (int) (TAIL_RETENTION_RATE * (float) (other->size() - tailIndex)));
+            snake->resize(snake->size() + (size_t) (TAIL_RETENTION_RATE * (float) (other->size() - tailIndex)));
             other->resize(tailIndex);
         }
     }
